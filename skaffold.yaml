@@ -1,0 +1,28 @@
+apiVersion: skaffold/v4beta6
+kind: Config
+metadata:
+  name: kubernetes-apim
+build:
+  tagPolicy:
+    envTemplate:
+      template: '{{.IMAGE}}:latest'
+  artifacts:
+  - image: chanaka1200/wso2am
+    context: .
+    docker:
+      dockerfile: Dockerfileam
+  - image: chanaka1200/wso2am-analytics-dashboard
+    context: .
+    docker:
+      dockerfile: Dockerfilean
+  local:
+    push: false
+deploy:
+  helm:
+    releases:
+    - name: am-pattern-1
+      chartPath: advanced/am-pattern-1
+      valuesFiles:
+      - advanced/am-pattern-1/requirements.yaml
+      - advanced/am-pattern-1/values.yaml
+      version: 3.2.0-5
